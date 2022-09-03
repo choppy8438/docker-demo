@@ -1,0 +1,113 @@
+Create E2C account through amazon web services:
+uname -a
+docker
+
+apt-get update
+
+follow below link to install docker:
+https://docs.docker.com/engine/install/ubuntu/
+
+Uninstall old docker versions:
+sudo apt-get remove docker docker-engine docker.io containerd runc
+
+===============
+
+Install Docker :
+
+1. Set up the repository
+Update the apt package index and install packages to allow apt to use a repository over HTTPS:
+
+sudo apt-get update
+
+sudo apt-get install ca-certificates curl gnupg lsb-release
+
+2. Add Docker’s official GPG key:
+
+sudo mkdir -p /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+
+gpg (Gnu Privacy Guard) is the tool used in secure apt to sign files and check their signatures.
+
+3. Use the following command to set up the repository:
+ echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+Install Docker Engine
+Update the apt package index, and install the latest version of Docker Engine, containerd, and Docker Compose, or go to the next step to install a specific version:
+
+sudo apt-get update
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+
+dokcer
+
+docker version
+
+docker images
+
+root@ip-172-31-41-63:~# docker run hello-world
+Unable to find image 'hello-world:latest' locally
+latest: Pulling from library/hello-world
+2db29710123e: Already exists
+Digest: sha256:7d246653d0511db2a6b2e0436cfd0e52ac8c066000264b3ce63331ac66dca625
+Status: Downloaded newer image for hello-world:latest
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+    (amd64)
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+ $ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker ID:
+ https://hub.docker.com/
+
+For more examples and ideas, visit:
+ https://docs.docker.com/get-started/
+
+root@ip-172-31-41-63:~#
+
+
+docker ps is same as docker container ls
+
+docker ps -a is same as docker container -ls
+
+============
+
+Docker pull command:
+
+root@ip-172-31-41-63:~# docker pull nginx
+Using default tag: latest
+latest: Pulling from library/nginx
+7a6db449b51b: Pull complete
+ca1981974b58: Pull complete
+d4019c921e20: Pull complete
+7cb804d746d4: Pull complete
+e7a561826262: Pull complete
+7247f6e5c182: Pull complete
+Digest: sha256:b95a99feebf7797479e0c5eb5ec0bdfa5d9f504bc94da550c2f58e839ea6914f
+Status: Downloaded newer image for nginx:latest
+docker.io/library/nginx:latest
+root@ip-172-31-41-63:~# docker pull centos
+Using default tag: latest
+latest: Pulling from library/centos
+a1d0c7532777: Pull complete
+Digest: sha256:a27fd8080b517143cbbbab9dfb7c8571c40d67d534bbdee55bd6c473f432b177
+Status: Downloaded newer image for centos:latest
+docker.io/library/centos:latest
+root@ip-172-31-41-63:~# docker images
+REPOSITORY     TAG       IMAGE ID       CREATED         SIZE
+nginx          latest    2b7d6430f78d   9 days ago      142MB
+kindest/node   <none>    f5aa68ba122a   3 months ago    911MB
+hello-world    latest    feb5d9fea6a5   11 months ago   13.3kB
+centos         latest    5d0da3dc9764   11 months ago   231MB
+kindest/node   <none>    de6eb7df13da   2 years ago     1.25GB
+root@ip-172-31-41-63:~#
+
+
