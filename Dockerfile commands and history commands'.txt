@@ -1,0 +1,137 @@
+
+root@ip-172-31-41-63:~/docker-demo# ls -lrth
+total 12K
+-rw-r--r-- 1 root root  93 Sep  3 07:07 Dockerfile
+-rw-r--r-- 1 root root 192 Sep  3 07:07 app.py
+-rw-r--r-- 1 root root   6 Sep  3 07:08 requirement
+root@ip-172-31-41-63:~/docker-demo# pwd
+/root/docker-demo
+root@ip-172-31-41-63:~/docker-demo#
+
+root@ip-172-31-41-63:~/docker-demo# docker build -t python_image:1.0 .
+Sending build context to Docker daemon  4.096kB
+Step 1/5 : FROM python:2.7
+2.7: Pulling from library/python
+7e2b2a5af8f6: Pull complete
+09b6f03ffac4: Pull complete
+dc3f0c679f0f: Pull complete
+fd4b47407fc3: Pull complete
+b32f6bf7d96d: Pull complete
+6f4489a7e4cf: Pull complete
+af4b99ad9ef0: Pull complete
+39db0bc48c26: Pull complete
+acb4a89489fc: Pull complete
+Digest: sha256:cfa62318c459b1fde9e0841c619906d15ada5910d625176e24bf692cf8a2601d
+Status: Downloaded newer image for python:2.7
+ ---> 68e7be49c28c
+Step 2/5 : COPY . /tmp
+ ---> 797ee6fe436e
+Step 3/5 : RUN pip install flask
+ ---> Running in 062d96d034ab
+DEPRECATION: Python 2.7 reached the end of its life on January 1st, 2020. Please upgrade your Python as Python 2.7 is no longer maintained. A future version of pip will drop support for Python 2.7. More details about Python 2 support in pip, can be found at https://pip.pypa.io/en/latest/development/release-process/#python-2-support
+Collecting flask
+  Downloading Flask-1.1.4-py2.py3-none-any.whl (94 kB)
+Collecting click<8.0,>=5.1
+  Downloading click-7.1.2-py2.py3-none-any.whl (82 kB)
+Collecting Werkzeug<2.0,>=0.15
+  Downloading Werkzeug-1.0.1-py2.py3-none-any.whl (298 kB)
+Collecting Jinja2<3.0,>=2.10.1
+  Downloading Jinja2-2.11.3-py2.py3-none-any.whl (125 kB)
+Collecting itsdangerous<2.0,>=0.24
+  Downloading itsdangerous-1.1.0-py2.py3-none-any.whl (16 kB)
+Collecting MarkupSafe>=0.23
+  Downloading MarkupSafe-1.1.1-cp27-cp27mu-manylinux1_x86_64.whl (24 kB)
+Installing collected packages: click, Werkzeug, MarkupSafe, Jinja2, itsdangerous, flask
+Successfully installed Jinja2-2.11.3 MarkupSafe-1.1.1 Werkzeug-1.0.1 click-7.1.2 flask-1.1.4 itsdangerous-1.1.0
+WARNING: You are using pip version 20.0.2; however, version 20.3.4 is available.
+You should consider upgrading via the '/usr/local/bin/python -m pip install --upgrade pip' command.
+Removing intermediate container 062d96d034ab
+ ---> fe6fff3f1925
+Step 4/5 : EXPOSE 8080
+ ---> Running in 74dd8405d0eb
+Removing intermediate container 74dd8405d0eb
+ ---> 865b2ef2321a
+Step 5/5 : CMD ["python", "/tmp/app.py"]
+ ---> Running in 7dcf0e394351
+Removing intermediate container 7dcf0e394351
+ ---> 6353a2f25a5b
+Successfully built 6353a2f25a5b
+Successfully tagged python_image:1.0
+
+root@ip-172-31-41-63:~/docker-demo# docker images
+REPOSITORY     TAG       IMAGE ID       CREATED         SIZE
+python_image   1.0       6353a2f25a5b   2 minutes ago   906MB
+kindest/node   <none>    f5aa68ba122a   3 months ago    911MB
+kindest/node   <none>    de6eb7df13da   2 years ago     1.25GB
+python         2.7       68e7be49c28c   2 years ago     902MB
+root@ip-172-31-41-63:~/docker-demo#
+
+root@ip-172-31-41-63:~/docker-demo# docker ps
+CONTAINER ID   IMAGE                  COMMAND                  CREATED          STATUS          PORTS                       NAMES
+f9308f9b4fdc   kindest/node:v1.24.0   "/usr/local/bin/entr…"   23 minutes ago   Up 22 minutes   127.0.0.1:46285->6443/tcp   kind-control-plane
+1cf8a00253de   kindest/node:v1.24.0   "/usr/local/bin/entr…"   23 minutes ago   Up 22 minutes                               kind-worker
+84d5d540d6ca   kindest/node:v1.24.0   "/usr/local/bin/entr…"   23 minutes ago   Up 22 minutes                               kind-worker2
+root@ip-172-31-41-63:~/docker-demo# docker container ls -a
+CONTAINER ID   IMAGE                  COMMAND                  CREATED          STATUS                    PORTS                       NAMES
+f9308f9b4fdc   kindest/node:v1.24.0   "/usr/local/bin/entr…"   23 minutes ago   Up 22 minutes             127.0.0.1:46285->6443/tcp   kind-control-plane
+1cf8a00253de   kindest/node:v1.24.0   "/usr/local/bin/entr…"   23 minutes ago   Up 22 minutes                                         kind-worker
+84d5d540d6ca   kindest/node:v1.24.0   "/usr/local/bin/entr…"   23 minutes ago   Up 22 minutes                                         kind-worker2
+a66c5ab58955   feb5d9fea6a5           "/hello"                 36 hours ago     Exited (0) 36 hours ago                               quirky_bouman
+45eaa5857b53   feb5d9fea6a5           "/hello"                 36 hours ago     Exited (0) 36 hours ago                               sweet_bhaskara
+123e9096f78d   df5de72bdb3b           "bash"                   8 days ago       Exited (127) 8 days ago                               interesting_jones
+c80b56e34810   feb5d9fea6a5           "/hello"                 8 days ago       Exited (0) 8 days ago                                 upbeat_greider
+5e4f97e1a9ae   feb5d9fea6a5           "/hello"                 8 days ago       Exited (0) 8 days ago                                 vigilant_kilby
+root@ip-172-31-41-63:~/docker-demo# docker ps -a
+CONTAINER ID   IMAGE                  COMMAND                  CREATED          STATUS                    PORTS                       NAMES
+f9308f9b4fdc   kindest/node:v1.24.0   "/usr/local/bin/entr…"   23 minutes ago   Up 22 minutes             127.0.0.1:46285->6443/tcp   kind-control-plane
+1cf8a00253de   kindest/node:v1.24.0   "/usr/local/bin/entr…"   23 minutes ago   Up 22 minutes                                         kind-worker
+84d5d540d6ca   kindest/node:v1.24.0   "/usr/local/bin/entr…"   23 minutes ago   Up 22 minutes                                         kind-worker2
+a66c5ab58955   feb5d9fea6a5           "/hello"                 36 hours ago     Exited (0) 36 hours ago                               quirky_bouman
+45eaa5857b53   feb5d9fea6a5           "/hello"                 36 hours ago     Exited (0) 36 hours ago                               sweet_bhaskara
+123e9096f78d   df5de72bdb3b           "bash"                   8 days ago       Exited (127) 8 days ago                               interesting_jones
+c80b56e34810   feb5d9fea6a5           "/hello"                 8 days ago       Exited (0) 8 days ago                                 upbeat_greider
+5e4f97e1a9ae   feb5d9fea6a5           "/hello"                 8 days ago       Exited (0) 8 days ago                                 vigilant_kilby
+root@ip-172-31-41-63:~/docker-demo#
+
+root@ip-172-31-41-63:~/docker-demo# docker run -d --name c1 -p 8080:8080 python_image:1.0
+5522708f3d2fe5e9e7000ea92ebca9ee3ea0f99066066690ac69cf56c92a60a2
+root@ip-172-31-41-63:~/docker-demo#
+
+root@ip-172-31-41-63:~/docker-demo# docker ps
+CONTAINER ID   IMAGE                  COMMAND                  CREATED          STATUS          PORTS                                       NAMES
+5522708f3d2f   python_image:1.0       "python /tmp/app.py"     21 seconds ago   Up 19 seconds   0.0.0.0:8080->8080/tcp, :::8080->8080/tcp   c1
+f9308f9b4fdc   kindest/node:v1.24.0   "/usr/local/bin/entr…"   24 minutes ago   Up 24 minutes   127.0.0.1:46285->6443/tcp                   kind-control-plane
+1cf8a00253de   kindest/node:v1.24.0   "/usr/local/bin/entr…"   24 minutes ago   Up 24 minutes                                               kind-worker
+84d5d540d6ca   kindest/node:v1.24.0   "/usr/local/bin/entr…"   24 minutes ago   Up 24 minutes                                               kind-worker2
+root@ip-172-31-41-63:~/docker-demo# docker ps -a
+CONTAINER ID   IMAGE                  COMMAND                  CREATED          STATUS                    PORTS                                       NAMES
+5522708f3d2f   python_image:1.0       "python /tmp/app.py"     30 seconds ago   Up 28 seconds             0.0.0.0:8080->8080/tcp, :::8080->8080/tcp   c1
+f9308f9b4fdc   kindest/node:v1.24.0   "/usr/local/bin/entr…"   25 minutes ago   Up 24 minutes             127.0.0.1:46285->6443/tcp                   kind-control-plane
+1cf8a00253de   kindest/node:v1.24.0   "/usr/local/bin/entr…"   25 minutes ago   Up 24 minutes                                                         kind-worker
+84d5d540d6ca   kindest/node:v1.24.0   "/usr/local/bin/entr…"   25 minutes ago   Up 24 minutes                                                         kind-worker2
+a66c5ab58955   feb5d9fea6a5           "/hello"                 36 hours ago     Exited (0) 36 hours ago                                               quirky_bouman
+45eaa5857b53   feb5d9fea6a5           "/hello"                 36 hours ago     Exited (0) 36 hours ago                                               sweet_bhaskara
+123e9096f78d   df5de72bdb3b           "bash"                   8 days ago       Exited (127) 8 days ago                                               interesting_jones
+c80b56e34810   feb5d9fea6a5           "/hello"                 8 days ago       Exited (0) 8 days ago                                                 upbeat_greider
+5e4f97e1a9ae   feb5d9fea6a5           "/hello"                 8 days ago       Exited (0) 8 days ago                                                 vigilant_kilby
+root@ip-172-31-41-63:~/docker-demo# docker container ls
+CONTAINER ID   IMAGE                  COMMAND                  CREATED          STATUS          PORTS                                       NAMES
+5522708f3d2f   python_image:1.0       "python /tmp/app.py"     38 seconds ago   Up 37 seconds   0.0.0.0:8080->8080/tcp, :::8080->8080/tcp   c1
+f9308f9b4fdc   kindest/node:v1.24.0   "/usr/local/bin/entr…"   25 minutes ago   Up 24 minutes   127.0.0.1:46285->6443/tcp                   kind-control-plane
+1cf8a00253de   kindest/node:v1.24.0   "/usr/local/bin/entr…"   25 minutes ago   Up 24 minutes                                               kind-worker
+84d5d540d6ca   kindest/node:v1.24.0   "/usr/local/bin/entr…"   25 minutes ago   Up 24 minutes                                               kind-worker2
+root@ip-172-31-41-63:~/docker-demo# docker container ls -a
+CONTAINER ID   IMAGE                  COMMAND                  CREATED          STATUS                    PORTS                                       NAMES
+5522708f3d2f   python_image:1.0       "python /tmp/app.py"     40 seconds ago   Up 39 seconds             0.0.0.0:8080->8080/tcp, :::8080->8080/tcp   c1
+f9308f9b4fdc   kindest/node:v1.24.0   "/usr/local/bin/entr…"   25 minutes ago   Up 24 minutes             127.0.0.1:46285->6443/tcp                   kind-control-plane
+1cf8a00253de   kindest/node:v1.24.0   "/usr/local/bin/entr…"   25 minutes ago   Up 24 minutes                                                         kind-worker
+84d5d540d6ca   kindest/node:v1.24.0   "/usr/local/bin/entr…"   25 minutes ago   Up 24 minutes                                                         kind-worker2
+a66c5ab58955   feb5d9fea6a5           "/hello"                 36 hours ago     Exited (0) 36 hours ago                                               quirky_bouman
+45eaa5857b53   feb5d9fea6a5           "/hello"                 36 hours ago     Exited (0) 36 hours ago                                               sweet_bhaskara
+123e9096f78d   df5de72bdb3b           "bash"                   8 days ago       Exited (127) 8 days ago                                               interesting_jones
+c80b56e34810   feb5d9fea6a5           "/hello"                 8 days ago       Exited (0) 8 days ago                                                 upbeat_greider
+5e4f97e1a9ae   feb5d9fea6a5           "/hello"                 8 days ago       Exited (0) 8 days ago                                                 vigilant_kilby
+root@ip-172-31-41-63:~/docker-demo#
+
+root@ip-172-31-41-63:~/docker-demo# curl localhost:8080
+Hello from container..
